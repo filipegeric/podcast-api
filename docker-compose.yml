@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+      target: development
+    container_name: podcast-api
+    image: podcast-api:latest
+    user: '1000:1000'
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - podcast-network
+    ports:
+      - 3000:3000
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12.3
+    container_name: podcast-db
+    ports:
+      - 5432:5432
+    networks:
+      - podcast-network
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: podcast-db
+    volumes:
+      - pg:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:4.25
+    container_name: podcast-pgadmin
+    ports:
+      - 6400:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - podcast-network
+    depends_on:
+      - db
+
+networks:
+  podcast-network:
+    driver: bridge
+
+volumes:
+  pgadmin:
+    driver: local
+
+  pg:
+    driver: local
+
+  storage:
+    driver: local
+
+  mail:
+    driver: local
