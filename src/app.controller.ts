@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 
 import { AppService } from './app.service';
 
@@ -9,12 +9,6 @@ export class AppController {
   @Get('podcasts')
   getPodcasts(@Query('q') searchTerm?: string) {
     return this.appService.getPodcasts(searchTerm);
-  }
-
-  @Get('podcasts/:id')
-  getSinglePodcast(@Param('id', ParseIntPipe) id: number) {
-    // TODO:
-    return { id };
   }
 
   @Get('tags')

@@ -34,4 +34,7 @@ export class Track {
   @ManyToMany(() => Tag)
   @JoinTable()
   tags: Tag[];
+
+  @Column({ nullable: true })
+  fileName: string;
 }
