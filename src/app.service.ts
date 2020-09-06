@@ -14,15 +14,18 @@ export class AppService {
     private tagRepository: Repository<Tag>,
   ) {}
 
-  getPodcasts(searchTerm?: string) {
+  async getPodcasts(searchTerm?: string, tag?: number) {
     const where: FindConditions<Track> = {};
     if (searchTerm) {
       where.title = Like(`%${searchTerm}%`);
     }
-    return this.trackRepository.find({
+    let tracks = await this.trackRepository.find({
       where,
-      relations: ['author', 'tags'],
     });
+    if (tag) {
+      tracks = tracks.filter((el) => el.tags.some((t) => t.id === tag));
+    }
+    return tracks;
   }
 
   getTags() {

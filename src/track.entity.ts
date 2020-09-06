@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -28,11 +29,14 @@ export class Track {
   @CreateDateColumn()
   createdAt: string;
 
-  @ManyToOne(() => Author, { nullable: false })
+  @ManyToOne(() => Author, { nullable: false, eager: true })
+  @JoinColumn({ name: 'authorId' })
   author: Author;
+  @Column({ name: 'authorId' })
+  authorId: number;
 
-  @ManyToMany(() => Tag)
-  @JoinTable()
+  @ManyToMany(() => Tag, { eager: true })
+  @JoinTable({ name: 'track_tag' })
   tags: Tag[];
 
   @Column({ nullable: true })
