@@ -3,11 +3,12 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { Author } from './author.entity';
-import { Tag } from './tag.entity';
-import { Track } from './track.entity';
+import { AudioModule } from './audio/audio.module';
+import { Author } from './audio/author.entity';
+import { Tag } from './audio/tag.entity';
+import { Track } from './audio/track.entity';
+import { AuthModule } from './auth/auth.module';
+import { User } from './auth/user.entity';
 
 @Module({
   imports: [
@@ -21,13 +22,14 @@ import { Track } from './track.entity';
       username: 'dev',
       password: 'dev',
       database: 'podcast-db',
-      entities: [Author, Track, Tag],
+      entities: [Author, Track, Tag, User],
       synchronize: true,
       logging: true,
     }),
-    TypeOrmModule.forFeature([Track, Tag]),
+    AuthModule,
+    AudioModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

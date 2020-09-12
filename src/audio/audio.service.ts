@@ -6,7 +6,7 @@ import { Tag } from './tag.entity';
 import { Track } from './track.entity';
 
 @Injectable()
-export class AppService {
+export class AudioService {
   constructor(
     @InjectRepository(Track)
     private trackRepository: Repository<Track>,
